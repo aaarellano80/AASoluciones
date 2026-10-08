@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Taquería El Fogón: menú de tacos al carbón y reseñas.">
+<meta name="theme-color" content="#c4281c">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌮</text></svg>">
+<title>Taquería El Fogón</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bungee&family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&display=swap">
+<style>
+  /* Layout: una columna estrecha tipo letrero de taquería; tres pantallas por hash (#inicio, #menu, #resena) */
+  :root {
+    --cal: #fbf7ee;        /* pared encalada */
+    --cal-2: #f2ead8;
+    --tinta: #2a1712;      /* texto */
+    --tinta-suave: #6b5148;
+    --chile: #c4281c;      /* rojo de rótulo */
+    --chile-fg: #fff6ea;
+    --maiz: #f4b223;       /* amarillo maíz */
+    --nopal: #2f7d4f;      /* verde nopal */
+    --linea: #e3d6bd;
+    --f-rotulo: "Bungee", "Impact", "Arial Black", sans-serif;
+    --f-titulo: "Barlow Condensed", "Arial Narrow", sans-serif;
+    --f-texto: "Barlow", "Segoe UI", system-ui, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --cal: #1d1411; --cal-2: #2a1e19; --tinta: #f6ead8; --tinta-suave: #c7ad9c;
+      --chile: #e2463a; --chile-fg: #fff6ea; --maiz: #f7c04a; --nopal: #5fbf86; --linea: #3d2d26;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --cal: #1d1411; --cal-2: #2a1e19; --tinta: #f6ead8; --tinta-suave: #c7ad9c;
+    --chile: #e2463a; --chile-fg: #fff6ea; --maiz: #f7c04a; --nopal: #5fbf86; --linea: #3d2d26;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { min-height: 100%; }
+  body {
+    background: var(--cal);
+    color: var(--tinta);
+    font-family: var(--f-texto);
+    font-size: 17px;
+    line-height: 1.5;
+    padding-inline: 16px;
+    padding-block: 0 40px;
+  }
+
+  /* Papel picado */
+  .picado {
+    height: 34px;
+    margin-inline: -16px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(56px, 1fr));
+    overflow: hidden;
+  }
+  .picado span {
+    background: var(--c);
+    clip-path: polygon(0 0, 100% 0, 100% 70%, 85% 100%, 70% 70%, 50% 100%, 30% 70%, 15% 100%, 0 70%);
+    -webkit-mask: radial-gradient(circle at 50% 38%, transparent 5px, #000 5.5px);
+            mask: radial-gradient(circle at 50% 38%, transparent 5px, #000 5.5px);
+  }
+  .picado span:nth-child(4n+1) { --c: var(--chile); }
+  .picado span:nth-child(4n+2) { --c: var(--maiz); }
+  .picado span:nth-child(4n+3) { --c: var(--nopal); }
+  .picado span:nth-child(4n+4) { --c: #e0679a; }
+
+  main { max-width: 520px; margin-inline: auto; }
+  .pantalla { padding-block: 28px 0; }
+
+  /* Inicio */
+  .marca { text-align: center; padding-block: 18px 8px; }
+  .marca .eyebrow {
+    font-family: var(--f-titulo); font-weight: 600; letter-spacing: .18em;
+    text-transform: uppercase; color: var(--nopal); font-size: 15px;
+  }
+  .marca h1 {
+    font-family: var(--f-rotulo); font-weight: 400;
+    font-size: clamp(44px, 14vw, 68px); line-height: .95; margin: 6px 0 10px;
+    color: var(--chile); text-wrap: balance;
+    text-shadow: 3px 3px 0 var(--maiz);
+  }
+  .marca p { margin: 0; color: var(--tinta-suave); font-size: 18px; }
+
+  .opciones { display: grid; gap: 14px; margin-block: 30px 30px; }
+  .boton {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    width: 100%; padding: 20px 22px; border-radius: 14px;
+    font-family: var(--f-titulo); font-weight: 700; font-size: 26px; letter-spacing: .02em;
+    text-decoration: none; text-transform: uppercase; border: 3px solid var(--tinta);
+    box-shadow: 5px 5px 0 var(--tinta);
+    transition: transform .12s ease, box-shadow .12s ease;
+  }
+  .boton small { display: block; font-family: var(--f-texto); font-weight: 500; font-size: 15px; text-transform: none; letter-spacing: 0; opacity: .85; }
+  .boton .flecha { font-family: var(--f-rotulo); font-size: 26px; }
+  .boton:active { transform: translate(3px, 3px); box-shadow: 2px 2px 0 var(--tinta); }
+  .boton:focus-visible, .volver:focus-visible { outline: 3px solid var(--nopal); outline-offset: 3px; }
+  .boton.rojo { background: var(--chile); color: var(--chile-fg); }
+  .boton.amarillo { background: var(--maiz); color: #2a1712; }
+
+  .datos {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+    border-top: 2px dashed var(--linea); padding-top: 18px;
+    font-size: 15px; color: var(--tinta-suave);
+  }
+  .datos b { display: block; font-family: var(--f-titulo); font-size: 14px; letter-spacing: .14em; text-transform: uppercase; color: var(--tinta); }
+
+  /* Barra de volver */
+  .volver {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: var(--f-titulo); font-weight: 700; font-size: 18px; letter-spacing: .06em; text-transform: uppercase;
+    color: var(--tinta); text-decoration: none;
+    padding: 8px 14px; border: 2px solid var(--tinta); border-radius: 999px; background: var(--cal-2);
+  }
+  .titulo-seccion {
+    font-family: var(--f-rotulo); font-weight: 400; color: var(--chile);
+    font-size: clamp(34px, 10vw, 46px); line-height: 1; margin: 22px 0 6px;
+  }
+  .sub { margin: 0 0 18px; color: var(--tinta-suave); }
+
+  /* Menú */
+  .grupo { margin-block: 26px; }
+  .grupo h3 {
+    display: inline-block; margin: 0 0 8px;
+    font-family: var(--f-titulo); font-weight: 700; font-size: 20px; letter-spacing: .14em; text-transform: uppercase;
+    background: var(--tinta); color: var(--cal); padding: 2px 12px; border-radius: 4px;
+  }
+  .grupo ul { list-style: none; margin: 0; padding: 0; }
+  .grupo li {
+    display: flex; align-items: baseline; gap: 8px;
+    padding-block: 9px; border-bottom: 1px solid var(--linea);
+  }
+  .grupo li .nombre { font-weight: 600; font-size: 18px; min-width: 0; }
+  .grupo li .nombre small { display: block; font-weight: 400; font-size: 14px; color: var(--tinta-suave); }
+  .grupo li .puntos { flex: 1; border-bottom: 2px dotted var(--linea); transform: translateY(-5px); min-width: 16px; }
+  .grupo li .precio {
+    font-family: var(--f-titulo); font-weight: 700; font-size: 21px; color: var(--chile);
+    font-variant-numeric: tabular-nums; white-space: nowrap;
+  }
+  .nota {
+    background: var(--cal-2); border-left: 4px solid var(--nopal); border-radius: 6px;
+    padding: 12px 14px; font-size: 15px; color: var(--tinta-suave);
+  }
+
+  /* Reseña */
+  .estrellas { font-size: 40px; letter-spacing: 6px; color: var(--maiz); text-align: center; margin-block: 18px 6px; -webkit-text-stroke: 1.5px var(--tinta); }
+  .resena-texto { text-align: center; max-width: 34ch; margin: 0 auto 26px; font-size: 18px; }
+  .gracias { text-align: center; color: var(--tinta-suave); font-size: 15px; margin-top: 18px; }
+
+  [hidden] { display: none !important; }
+  @media (prefers-reduced-motion: reduce) { .boton { transition: none; } }
+</style>
+</head>
+<body>
+<div class="picado" aria-hidden="true">
+  <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+  <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+  <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+</div>
+
+<main>
+  <!-- INICIO -->
+  <section id="p-inicio" class="pantalla" aria-labelledby="t-inicio">
+    <div class="marca">
+      <div class="eyebrow">Tacos al carbón · desde 1998</div>
+      <h1 id="t-inicio">El Fogón</h1>
+      <p>Taquería de barrio. Tortilla hecha a mano, salsas de molcajete.</p>
+    </div>
+
+    <nav class="opciones" aria-label="Opciones">
+      <a class="boton rojo" href="#menu">
+        <span>Ver menú<small>Tacos, especialidades y bebidas</small></span>
+        <span class="flecha" aria-hidden="true">→</span>
+      </a>
+      <a class="boton amarillo" href="#resena">
+        <span>Dejar una reseña<small>Cuéntanos cómo te fue</small></span>
+        <span class="flecha" aria-hidden="true">★</span>
+      </a>
+    </nav>
+
+    <div class="datos">
+      <div><b>Horario</b>Mar a Dom<br>6:00 pm – 1:00 am</div>
+      <div><b>Dónde</b>Av. Juárez 214<br>Col. Centro</div>
+    </div>
+  </section>
+
+  <!-- MENÚ -->
+  <section id="p-menu" class="pantalla" aria-labelledby="t-menu" hidden>
+    <a class="volver" href="#inicio">← Inicio</a>
+    <h2 class="titulo-seccion" id="t-menu">Menú</h2>
+    <p class="sub">Precios en pesos mexicanos, por pieza.</p>
+
+    <div class="grupo">
+      <h3>Tacos</h3>
+      <ul>
+        <li><span class="nombre">Pastor<small>Con piña del trompo</small></span><span class="puntos"></span><span class="precio">$22</span></li>
+        <li><span class="nombre">Asada</span><span class="puntos"></span><span class="precio">$25</span></li>
+        <li><span class="nombre">Suadero</span><span class="puntos"></span><span class="precio">$22</span></li>
+        <li><span class="nombre">Chorizo</span><span class="puntos"></span><span class="precio">$20</span></li>
+        <li><span class="nombre">Campechano<small>Asada + chorizo</small></span><span class="puntos"></span><span class="precio">$25</span></li>
+        <li><span class="nombre">Tripa<small>Dorada o suave</small></span><span class="puntos"></span><span class="precio">$28</span></li>
+        <li><span class="nombre">Pollo</span><span class="puntos"></span><span class="precio">$20</span></li>
+      </ul>
+    </div>
+
+    <div class="grupo">
+      <h3>Especialidades</h3>
+      <ul>
+        <li><span class="nombre">Gringa<small>Tortilla de harina, pastor y queso</small></span><span class="puntos"></span><span class="precio">$55</span></li>
+        <li><span class="nombre">Volcán<small>Tostada con queso gratinado</small></span><span class="puntos"></span><span class="precio">$30</span></li>
+        <li><span class="nombre">Quesadilla</span><span class="puntos"></span><span class="precio">$40</span></li>
+        <li><span class="nombre">Orden de 5 tacos<small>Del mismo guisado</small></span><span class="puntos"></span><span class="precio">$100</span></li>
+      </ul>
+    </div>
+
+    <div class="grupo">
+      <h3>Bebidas</h3>
+      <ul>
+        <li><span class="nombre">Agua fresca<small>Horchata o jamaica</small></span><span class="puntos"></span><span class="precio">$25</span></li>
+        <li><span class="nombre">Refresco</span><span class="puntos"></span><span class="precio">$25</span></li>
+        <li><span class="nombre">Cerveza</span><span class="puntos"></span><span class="precio">$40</span></li>
+      </ul>
+    </div>
+
+    <div class="grupo">
+      <h3>Extras</h3>
+      <ul>
+        <li><span class="nombre">Queso</span><span class="puntos"></span><span class="precio">$10</span></li>
+        <li><span class="nombre">Guacamole</span><span class="puntos"></span><span class="precio">$30</span></li>
+        <li><span class="nombre">Cebollitas asadas</span><span class="puntos"></span><span class="precio">$20</span></li>
+      </ul>
+    </div>
+
+    <p class="nota">Todos los tacos incluyen cebolla, cilantro y salsas de la casa.</p>
+    <p><a class="volver" href="#inicio">← Volver al inicio</a></p>
+  </section>
+
+  <!-- RESEÑA -->
+  <section id="p-resena" class="pantalla" aria-labelledby="t-resena" hidden>
+    <a class="volver" href="#inicio">← Inicio</a>
+    <h2 class="titulo-seccion" id="t-resena">¿Qué tal los tacos?</h2>
+    <div class="estrellas" aria-hidden="true">★★★★★</div>
+    <p class="resena-texto">Tu opinión nos ayuda a mejorar y a que más gente nos encuentre. Te toma menos de un minuto.</p>
+
+    <a class="boton rojo" id="btn-google" href="#" target="_blank" rel="noopener">
+      <span>Reseña en Google<small>Se abre Google Maps</small></span>
+      <span class="flecha" aria-hidden="true">↗</span>
+    </a>
+
+    <p class="gracias">¡Gracias por visitarnos!</p>
+  </section>
+</main>
+
+<script>
+  // Cambia este link por el de tu negocio:
+  // Google Business Profile → "Pedir reseñas" → copiar enlace
+  const GOOGLE_REVIEW_URL = "https://www.google.com/maps/search/?api=1&query=Taquer%C3%ADa+El+Fog%C3%B3n";
+
+  document.getElementById("btn-google").href = GOOGLE_REVIEW_URL;
+
+  const pantallas = { inicio: "p-inicio", menu: "p-menu", resena: "p-resena" };
+  function mostrar() {
+    const clave = location.hash.slice(1);
+    const actual = pantallas[clave] ? clave : "inicio";
+    for (const [k, id] of Object.entries(pantallas)) {
+      document.getElementById(id).hidden = k !== actual;
+    }
+    window.scrollTo(0, 0);
+  }
+  window.addEventListener("hashchange", mostrar);
+  mostrar();
+</script>
+
+</body>
+</html>
